@@ -1,6 +1,7 @@
 export type SubscriptionCallback<T> = (state: T) => void;
 
 type State = object;
+type UpdateStateCallback<T> = (state: T) => T;
 
 export class ProxyStore<T extends State> {
   public state: any;
@@ -25,8 +26,8 @@ export class ProxyStore<T extends State> {
     return () => this.subscriptions.delete(fn);
   }
 
-  update(fn: (state: T) => T) {
-    const newState: any = fn(this.state);
+  update(fn: UpdateStateCallback<T>) {
+    const newState: any = fn({ ...this.state });
     Object.keys(newState).forEach(
       (key: string | number) => (this.state[key] = newState[key])
     );

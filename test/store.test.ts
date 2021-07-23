@@ -27,9 +27,12 @@ describe('ProxyStore', () => {
     const sub = jest.fn();
     p.subscribe(sub);
 
-    p.update(state => ({ ...state, name: 'Han' }));
+    p.update(state => {
+      state.name = 'Hans';
+      return state;
+    });
 
-    expect(sub).toHaveBeenCalled();
+    expect(sub).toHaveBeenCalledTimes(1);
   });
 
   it('should handle nested subscriptions', () => {
